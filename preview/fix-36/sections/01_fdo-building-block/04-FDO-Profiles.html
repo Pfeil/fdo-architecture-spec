@@ -168,6 +168,7 @@
             The cardinality of the <a>attribute definitions</a> MUST be respected in the <a>FDOs</a>.
             When not using <a>profile extension</a>, <a><em>0.FDO/Attribute</em></a> MUST be defined
             with at least the <a>attributes</a> the <a>root profile</a> specifies.
+            Additional attributs can be used as well.
         </td>
         <td>0..*</td>
     </tr>
@@ -177,8 +178,10 @@
             A <a>profile</a> containing this <a>attribute,</a> will implicitly require all <a>attributes</a>
             of the referenced <a>profile</a> (see <a href="#rule-r4_11"></a>).
             In order to ensure all <a>FDOs</a> using this <a>profile</a> have the minimum set of <a>attributes</a> (as specified by <a>0.FDO/Root</a>),
-            profiles MUST either extend directly or indirectly from <a><em>0.FDO/Root</em></a>.
-            Alternatively, they may specify these minimum <a>attributes</a> directly using <a><em>0.FDO/Attribute</em></a>.
+            profiles SHOULD either extend directly or indirectly from <a><em>0.FDO/Root</em></a>.
+            Indirect extension means any profile in the extension chain extends <a>0.FDO/Root</a>.
+            If profile extension is not used by a profile, it MUST specify these minimum <a>attributes</a>
+            directly using <a><em>0.FDO/Attribute</em></a>.
         </td>
         <td>0..*</td>
     </tr>
