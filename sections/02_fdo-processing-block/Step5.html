@@ -94,12 +94,23 @@
                 </ul>
             </li>
         </ol>
-    <aside class="example" title="A well-formed FDO with all required <a>FDO root profile</a> fields">
+    <aside class="example" title="Inspecting the FDO types">
         <p>
-            This example shows a simple <a>FDO record</a> with two <a>FDO types</a> 21.32/234.
-            Adding to the example is the fact that the <a>FDO type</a> 21.32/234 is
-            derived from <a>FDO type</a> 21.32/123 which is itself derived from <a>FDO type</a> 21.1/0.
+            This example shows a simple <a>FDO record</a> 10.1234/456 with two <a>FDO types</a> 21.abc/Concept (the
+            general type of resource) and 21.abc/application-json-ld (the MIME type of the resource).
+            Adding to the example is the fact that the <a>FDO type</a> 21.abc/application-json-ld is derived from
+            the <a>FDO type</a> 21.abc/application-json.
         </p>
+
+            Applying the processing step <a href="#step5"></a> delivers
+            <ul>
+                <li>FULL_MATCH for an empty ExpectedFdoTypeList</li>
+                <li> ALL_MATCH for the ExpectedFdoTypeList [21.abc/Concept, 21.abc/application-json-ld]</li>
+                <li> PARTIAL_MATCH for the ExpectedFdoTypeList [21.abc/Dataset, 21.abc/application-json-ld]</li>
+                <li> NO_MATCH for the ExpectedFdoTypeList [21.abc/application-json], but DERIVED_MATCH if the
+                    Type_Matching is set to DERIVED_MATCH</li>
+            </ul>
+
         <table class="numbered">
             <thead>
             <tr>
@@ -110,17 +121,33 @@
             <tr>
                 <th scope="row">0.FDO/Type
                 </th>
-                <td>10.123/Type1</td>
+                <td>10.123/ResourceTypeGeneral</td>
+            </tr>
+            <tr>
+                <th scope="row">10.123/ResourceTypeGeneral
+                </th>
+                <td>21.abc/Concept</td>
             </tr>
             <tr>
                 <th scope="row">0.FDO/Type
                 </th>
-                <td>21.32/234</td>
+                <td>21.abc/MimeType</td>
+            </tr>
+            <tr>
+                <th scope="row">21.abc/MimeType
+                </th>
+                <td>21.abc/application-json-ld</td>
             </tr>
             <tr>
                 <th scope="row">0.FDO/Profile
                 </th>
                 <td>10.123/Profile1</td>
+            </tr>
+            <tr>
+                <th scope="row">0.FDO/Data
+                </th>
+                <td>self
+                </td>
             </tr>
             <tr>
                 <th scope="row">0.FDO/Name
@@ -131,17 +158,6 @@
                 <th scope="row">0.FDO/Description
                 </th>
                 <td>FDO Test Demonstration</td>
-            </tr>
-            <tr>
-                <th scope="row">0.FDO/Data_Attribute
-                </th>
-                <td>0.FDO/SelfRef
-                </td>
-            </tr>
-            <tr>
-                <th scope="row">0.FDO/SelfRef
-                </th>
-                <td>DOI:10.234/456</td>
             </tr>
             </tbody>
         </table>
