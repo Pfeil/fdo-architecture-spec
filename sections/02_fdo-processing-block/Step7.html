@@ -38,10 +38,6 @@
                         None of the <a>attributes</a> in the <a>profile</a> has the proper number of occurrences in the
                         <a>record</a>.
                     </li>
-                    <li>NOT_DEFINED:
-                        The <a>FDO profile</a> does not specify any <a>attribute definitions</a>, or the <a>profile</a>
-                        cannot be properly interpreted.
-                    </li>
                 </ul>
             </li>
             <li>Attributes_In_Profile: A list with each element being a combination of
@@ -107,8 +103,8 @@
                     <li>ERROR_RESOLVING_FDO: Profile <a>PID</a> cannot be resolved.</li>
                     <li>ERROR_PROFILE_NOT_ACCESSIBLE: The <a>PID</a> resolves but the <a>FDO</a> is not accessible.
                     </li>
-                    <li>ERROR_INVALID_PROFILE: The <a>FDO record</a> is not parsable, not interpretable, or not a
-                        <a>profile</a>.
+                    <li>ERROR_INVALID_PROFILE: The <a>FDO record</a> is not parsable, not interpretable, not a
+                        <a>profile</a>, or does not specify any <a>attribute definitions</a>.
                     </li>
                 </ul>
             </li>
