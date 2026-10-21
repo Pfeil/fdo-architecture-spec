@@ -2,9 +2,11 @@
 <p>
     Each <a>attribute definition</a> specifies a <a>cardinality</a> with which the respective <a>attribute</a> is allowed
     to occur in an <a>FDO record</a>. If an <a>attribute definition</a> is part of a <a>profile</a>, the
-    <a>cardinality</a> of the <a>attribute</a> can be further restricted directly within the <a>profile</a>.
+    <a>cardinality</a> of the <a>attribute</a> can be further restricted directly within the <a>profile</a> to adapt the
+    <a>attribute</a> to a concrete context.
     This step verifies for all <a>profiles</a> of interest that all <a>attribute</a> <a>cardinalities</a> given by the
-    <a>profile</a> and its <a>attribute definitions</a> are respected by the <a>FDO record</a>.
+    <a>profile</a> (that is, <a>cardinalities</a> given by the <a>attribute definitions</a> therein, and restrictions to
+    those) are respected by the <a>FDO record</a>.
 </p>
 <p>
     This step returns for each <a>profile</a> of interest a description of the state of <a>validation</a> which can
@@ -26,16 +28,15 @@
                 <ul>
                     <li>VALID:
                         All <a>attributes</a> are properly often repeated in the <a>record</a> with respect to
-                        the <a>cardinalities</a> in the <a>profile</a>.
-                        Note that missing optional fields is acceptable.
+                        the <a>cardinalities</a> in the <a>profile</a>. Note that missing optional fields is acceptable.
                     </li>
                     <li>PARTIALLY_VALID:
-                        Some <a>profile</a> required <a>attributes</a> are missing or are not repeated
-                        often enough.
+                        Some of the <a>attributes</a> in the <a>profile</a> have the proper number of occurrences in the
+                        <a>record</a>.
                     </li>
                     <li>INVALID:
-                        No <a>profile</a> required <a>attributes</a> are found or they are all not repeated
-                        often enough.
+                        None of the <a>attributes</a> in the <a>profile</a> has the proper number of occurrences in the
+                        <a>record</a>.
                     </li>
                     <li>NOT_DEFINED:
                         The <a>FDO profile</a> does not specify any <a>attribute definitions</a>, or the <a>profile</a>
@@ -43,7 +44,7 @@
                     </li>
                 </ul>
             </li>
-            <li>Attributes_In_Profile: A list with each element being a combination of a
+            <li>Attributes_In_Profile: A list with each element being a combination of
                 <ul>
                     <li>
                         the <a>PID</a> of an <a>attribute definition</a> found in the <a>FDO profile</a> and
@@ -53,10 +54,19 @@
                         <a>profile</a>, this <a>cardinality</a> overrides the original <a>cardinality</a>.
                     </li>
                 </ul>
-                Empty list when invalid.
+                Empty list when INVALID.
             </li>
-            <li>MissingAttributes: The list of missing required <a>attributes</a> and attributes which are not repeated
-                often enough, with respect to their <a>cardinality</a>. Empty list when VALID.
+            <li>Invalid_Attributes: A list with each element being a combination of
+                <ul>
+                    <li>
+                        the <a>PID</a> of an <a>attribute definition</a> found in the <a>FDO profile</a> that does not
+                        have the right number of occurrences in the <a>FDO record</a>, and
+                    </li>
+                    <li>
+                        the <a>attribute</a>'s actual number of occurrences in the <a>record</a>.
+                    </li>
+                </ul>
+                Empty list when VALID.
             </li>
         </ul>
     </dd>
