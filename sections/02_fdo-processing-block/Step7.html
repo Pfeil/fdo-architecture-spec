@@ -1,21 +1,15 @@
-<h3 id="step7">S-7: <a>FDO Profile</a>(s) Validation</h3>
+<h3 id="step7">[S-7]: <a>FDO Attribute</a>(s) Cardinality Validation</h3>
 <p>
-    From <a href="#step6"></a>, one or more <a>FDO Profiles</a> of interest were found in the <a>FDO Record</a>.
-    The <a>FDO Profile</a> validation step verifies that the <a>FDO Record</a> is valid according to the
-    <a>FDO Profile</a>’s definition.
-    An <a>FDO</a> is said to be an instance of a <a>FDO Profile</a> when it exhibits all the characteristics it specifies.
+    This step verifies that the <a>FDO attributes</a> in the <a>FDO record</a> occur with the correct <a>cardinalities</a>.
+    Each <a>attribute definition</a> specifies a <a>cardinality</a> with which the respective <a>attribute</a> is allowed
+    to occur in any <a>FDO record</a>. If this <a>attribute definition</a> is part of one of the <a>profiles</a> of the
+    <a>FDO</a>, the <a>cardinality</a> of <a>attributes</a> can be further restricted by the <a>profile</a>. This step
+    verifies that both the <a>cardinalities</a> given within <a>attribute definitions</a> and restrictions given in the
+    <a>profiles</a> are respected in the <a>FDO record</a>.
 </p>
 <p>
-    The validation step acquires the <a>FDO Profile</a> Definition for each of the <a>FDO Profiles</a> in the
-    <a>FDO Record</a> by resolving each of the <a>FDO Profiles</a>’ identifiers and accessing their respective <a>FDO</a>.
-    Each <a>FDO Profile</a> Definition specifies the properties and more specifically the set of <a>attributes</a>
-    that MUST be present in any <a>FDO</a> that instantiates it.
-    This definition includes such things as the names of the <a>attributes</a>, value type, description, etc.
-</p>
-<p>
-    The <a>profile validation</a> returns a description of the state of validation which can range between complete and
-    partial success and total failure indicating to the processing entity the validity of
-    <a>FDO Record</a> and the values it can expect to find in it.
+    This step returns a description of the state of validation which can range between complete success, partial success,
+    and total failure, indicating the validity of the <a>FDO record</a> with respect to <a>attribute</a> <a>cardinalities</a>.
 </p>
 <dl>
     <dt>Inputs</dt>
