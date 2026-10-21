@@ -50,8 +50,19 @@
                         the <a>PID</a> of an <a>attribute definition</a> found in the <a>FDO profile</a> and
                     </li>
                     <li>
-                        its <a>cardinality</a>. If the <a>cardinality</a> of an <a>attribute</a> was restricted in the
+                        its required <a>cardinality</a> (minimum and maximum). If the <a>cardinality</a> of an <a>attribute</a> was restricted in the
                         <a>profile</a>, this <a>cardinality</a> overrides the original <a>cardinality</a>.
+                    </li>
+                </ul>
+            </li>
+            <li>Valid_Attributes: A list with each element being a combination of
+                <ul>
+                    <li>
+                        the <a>PID</a> of an <a>attribute definition</a> found in the <a>FDO profile</a> that has the
+                        right number of occurrences in the <a>FDO record</a>, and
+                    </li>
+                    <li>
+                        the <a>attribute</a>'s number of occurrences in the <a>record</a>.
                     </li>
                 </ul>
                 Empty list when INVALID.
@@ -70,6 +81,7 @@
             </li>
         </ul>
     </dd>
+
     <dt>Expected behavior</dt>
 
     <dd>
