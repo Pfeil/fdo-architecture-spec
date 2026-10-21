@@ -1,44 +1,62 @@
-<h3 id="step7">[S-7]: <a>FDO Attribute</a>(s) Cardinality Validation</h3>
+<h3 id="step7">[S-7]: <a>FDO Profile</a> <a>Cardinality</a> <a>Validation</a></h3>
 <p>
-    This step verifies that the <a>FDO attributes</a> in the <a>FDO record</a> occur with the correct <a>cardinalities</a>.
     Each <a>attribute definition</a> specifies a <a>cardinality</a> with which the respective <a>attribute</a> is allowed
-    to occur in any <a>FDO record</a>. If this <a>attribute definition</a> is part of one of the <a>profiles</a> of the
-    <a>FDO</a>, the <a>cardinality</a> of <a>attributes</a> can be further restricted by the <a>profile</a>. This step
-    verifies that both the <a>cardinalities</a> given within <a>attribute definitions</a> and restrictions given in the
-    <a>profiles</a> are respected in the <a>FDO record</a>.
+    to occur in an <a>FDO record</a>. If an <a>attribute definition</a> is part of a <a>profile</a>, the
+    <a>cardinality</a> of the <a>attribute</a> can be further restricted directly within the <a>profile</a>.
+    This step verifies for all <a>profiles</a> of interest that all <a>attribute</a> <a>cardinalities</a> given by the
+    <a>profile</a> and its <a>attribute definitions</a> are respected by the <a>FDO record</a>.
 </p>
 <p>
-    This step returns a description of the state of validation which can range between complete success, partial success,
-    and total failure, indicating the validity of the <a>FDO record</a> with respect to <a>attribute</a> <a>cardinalities</a>.
+    This step returns for each <a>profile</a> of interest a description of the state of <a>validation</a> which can
+    range between complete success, partial success, and total failure, indicating the validity of the <a>FDO record</a>
+    with respect to <a>attribute</a> <a>cardinalities</a>. <a>Attributes</a> that are used in the <a>FDO record</a> but
+    whose <a>attribute definition</a> is not part of the <a>profile</a> are not validated in this step.
 </p>
 <dl>
     <dt>Inputs</dt>
     <dd>
-        The inputs consist of the <a>FDO Record</a>, and the list of the <a>FDO Profile</a> to validate the
-        <a>FDO Record</a> against.
+        The inputs consist of the <a>FDO record</a>, and a list of the <a>FDO profiles</a> to validate the
+        <a>FDO record</a> against. Typically, this is the list of <a>profiles</a> that was returned in <a href="#step6"></a>.
     <dt>Outputs</dt>
     <dd>
-        The output consists of a list of Validated_Profile.
-        A Validated_Profile consists of the following:
+        The output is a list of Validated_Profile. A Validated_Profile consists of the following:
         <ul>
-            <li>Profile <a>PID</a>: <a>PID</a> of the <a>FDO Profile</a> validated</li>
-            <li>Status:
+            <li>Profile <a>PID</a>: <a>PID</a> of the <a>FDO profile</a> to be validated</li>
+            <li>Profile_Validation_Status:
                 <ul>
-                    <li>VALID: All <a>profile</a> required <a>attributes</a> are found.
+                    <li>VALID:
+                        All <a>attributes</a> are properly often repeated in the <a>record</a> with respect to
+                        the <a>cardinalities</a> in the <a>profile</a>.
                         Note that missing optional fields is acceptable.
                     </li>
-                    <li>PARTIALLY_VALID: Some <a>profile</a> required <a>attributes</a> are missing.</li>
-                    <li>INVALID, No <a>profile</a> required <a>attributes</a> are found.</li>
-                    <li>NOT_DEFINED.
-                        No <a>FDO Profile</a> definition could not be found.
+                    <li>PARTIALLY_VALID:
+                        Some <a>profile</a> required <a>attributes</a> are missing or are not repeated
+                        often enough.
+                    </li>
+                    <li>INVALID:
+                        No <a>profile</a> required <a>attributes</a> are found or they are all not repeated
+                        often enough.
+                    </li>
+                    <li>NOT_DEFINED:
+                        The <a>FDO profile</a> does not specify any <a>attribute definitions</a>, or the <a>profile</a>
+                        cannot be properly interpreted.
                     </li>
                 </ul>
             </li>
-            <li>Attributes: The list of <a>attributes</a> found in the <a>FDO Profile</a>.
+            <li>Attributes_In_Profile: A list with each element being a combination of a
+                <ul>
+                    <li>
+                        the <a>PID</a> of an <a>attribute definition</a> found in the <a>FDO profile</a> and
+                    </li>
+                    <li>
+                        its <a>cardinality</a>. If the <a>cardinality</a> of an <a>attribute</a> was restricted in the
+                        <a>profile</a>, this <a>cardinality</a> overrides the original <a>cardinality</a>.
+                    </li>
+                </ul>
                 Empty list when invalid.
             </li>
-            <li>MissingAttributes: The list of missing required <a>attributes</a>.
-                Empty list when VALID.
+            <li>MissingAttributes: The list of missing required <a>attributes</a> and attributes which are not repeated
+                often enough, with respect to their <a>cardinality</a>. Empty list when VALID.
             </li>
         </ul>
     </dd>
@@ -98,3 +116,11 @@
         </ol>
     </dd>
 </dl>
+
+    An <a>FDO</a> is said to be an instance of a <a>FDO profile</a> when it exhibits all the characteristics the
+    <a>profile</a> specifies.
+<p>
+    The validation step resolves each of the <a>FDO profile</a>'s <a>PIDs</a> into an <a>FDO record</a> containing the
+    <a>profile</a>'s content. Each <a>FDO profile</a> specifies a set of <a>attributes</a> that MUST be present in any <a>FDO</a> that
+    instantiates it, including such things as the names of the <a>attributes</a>, syntax, description, etc.
+</p>
