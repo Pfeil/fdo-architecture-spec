@@ -143,11 +143,80 @@
 </dl>
 
 <aside class="example" title="Validating the cardinalities in an FDO record against an FDO profile">
-    <p>
-        This example shows an <a>FDO record</a> 10.1234/999 with the <a>FDO profile</a> 10.123/Profile10.
-    </p>
+
+    This example shows an <a>FDO record</a> 10.1234/999 with the <a>FDO profile</a> 10.123/Profile10.
+    <div> <br/> </div>
 
     <table class="numbered">
+        <thead>
+        <tr>
+            <th scope="col">10.123/Profile10</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <th scope="row">0.FDO/Type</th>
+            <td>0.FDO/Profile</td>
+        </tr>
+        <tr>
+            <th scope="row">0.FDO/Profile</th>
+            <td>0.FDO/ProfileDef</td>
+        </tr>
+        <tr>
+            <th scope="row">0.FDO/Data</th>
+            <td>self</td>
+        </tr>
+        <tr>
+            <th scope="row">0.FDO/Name</th>
+            <td>Example_Profile.</td>
+        </tr>
+        <tr>
+            <th scope="row">0.FDO/Description</th>
+            <td>A profile to descibe a generic file.</td>
+        </tr>
+        <tr>
+            <th scope="row">0.FDO/Extends</th>
+            <td>0.FDO/Root</td>
+        </tr>
+        <tr>
+            <th scope="row">0.FDO/Attribute</th>
+            <td>0.FDO/Description</td>
+        </tr>
+        <tr>
+            <th scope="row">0.FDO/Attribute</th>
+            <td>0.FDO/BasicAttribute: 0.example/Author,<br/>
+                0.FDO/Cardinality: 1</td>
+        </tr>
+        <tr>
+            <th scope="row">0.FDO/Attribute</th>
+            <td>0.example/Project</td>
+        </tr>
+        <tr>
+            <th scope="row">0.FDO/Attribute</th>
+            <td>0.example/PublishingDate</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <br/>
+
+    The <a>attribute definitions</a> in the <a>profile</a> have the following cardinalities defined in their respective
+    <a>records</a> (which are not displayed themselves here for brevity):
+        <ul>
+            <li>0.FDO/Type, 0.FDO/Profile, 0.FDO/Data: 1..* (these <a>attributes</a> are pulled from the <a>root profile</a> 0.FDO/Root)</li>
+            <li>0.FDO/Description: 0..*</li>
+            <li>0.example/Author: 1..*</li>
+            <li>0.example/Project: 0..5</li>
+            <li>0.example/PublishingDate: 1</li>
+        </ul>
+    The <a>profile</a> itself restricts the number of authors to exactly 1 (instead of 1..* as in the
+    <a>attribute definition</a>). This gives the Attributes_In_Profile list:
+    <ul>
+        <li>Attributes_In_Profile: [(0.FDO/Type, 1..*), (0.FDO/Profile, 1..*), (0.FDO/Data, 1..*), (0.FDO/Description, 0..*), (0.example/Author, 1),
+    (0.example/Project, 0..5), (0.example/PublishingDate, 1)].</li>
+    </ul>
+
+     <table class="numbered">
         <thead>
         <tr>
             <th scope="col">10.1234/999</th>
@@ -171,17 +240,44 @@
             <td>0.example/HttpUrl</td>
         </tr>
         <tr>
-            <th scope="row"></th>
-            <td></td>
+            <th scope="row">0.example/HttpUrl</th>
+            <td>www.my-file.com</td>
+        </tr>
+        <tr>
+            <th scope="row">0.example/Description</th>
+            <td>A metadata file in JSON format.</td>
+        </tr>
+        <tr>
+            <th scope="row">0.example/Author</th>
+            <td>Max Mustermann</td>
+        </tr>
+        <tr>
+            <th scope="row">0.example/Author</th>
+            <td>Karl Mustermann</td>
+        </tr>
+        <tr>
+            <th scope="row">0.example/Project</th>
+            <td>SFB ABCD</td>
+        </tr>
+        <tr>
+            <th scope="row">0.example/Project</th>
+            <td>Project X</td>
+        </tr>
+        <tr>
+            <th scope="row">0.example/ExperimentNumber</th>
+            <td>1101</td>
         </tr>
         </tbody>
     </table>
 
-    Applying the processing step <a href="#step7"></a> gives the following validation result:
+    <br/>
+
+    Applying the processing step <a href="#step7"></a> discovers that the <a>record</a> has too many authors and that a
+    publishing date is missing. The experiment number is ignored because it is not in the <a>profile</a>.
+    The <a>validation</a> result would be:
     <ul>
         <li>Profile_Validation_Status: PARTIALLY_VALID</li>
-        <li>Attributes_In_Profile:</li>
-        <li>Valid_Attributes:</li>
-        <li>Invalid_Attributes:</li>
+        <li>Valid_Attributes: [(0.FDO/Type, 1), (0.FDO/Profile, 1), (0.FDO/Data, 1), (0.FDO/Description, 1), (0.example/Project, 2)</li>
+        <li>Invalid_Attributes: [(0.example/Author, 2), (0.example/PublishingDate, 0)]</li>
     </ul>
 </aside>
