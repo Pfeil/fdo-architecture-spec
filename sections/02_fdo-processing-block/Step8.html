@@ -1,19 +1,21 @@
-<h3 id="step8">S-8: <a>FDO attributes</a> Processing</h3>
-The step requires that <a href="#step7"></a> successfully validated one or more profiles resulting in one or
-more sets of <a>attributes</a>.
-For each set of <a>attributes</a>, the <a>FDO attribute</a> processing checks each <a>attribute</a>’s type - value pair to
-determine if the value is appropriate given its type.
-This validation process will greatly vary in complexity depending on the specific type.
+<h3 id="step8">[S-8]: FDO Attributes Validation</h3>
+The step requires that <a href="#step7"></a> successfully validated one or more profiles resulting in one or more sets
+of <a>attributes</a>. For each <a>attribute</a>, this step determines if the <a>attribute</a>'s value is appropriate
+given its <a>attribute definition</a>. The validation process will greatly vary in complexity depending on the rules
+of the specific <a>attribute definition</a>.
+
 <dl>
     <dt>Inputs</dt>
     <dd>
-        The inputs consist of the list of Validated_Profile from <a href="#step7"></a> with a status of VALID, PARTIALLY_VALID.
+        The inputs consist of the list of Validated_Profile (especially Valid_Attributes and Invalid_Attributes) from
+        <a href="#step7"></a>. Even if the <a>cardinality</a> of <a>attributes</a> was not valid (Invalid_Attributes),
+        a validation of the <a>attribute</a>'s value against its <a>attribute definition</a> may still be performed.
         Note that this step could be used with any <a>attribute</a> list that would need validation.
     </dd>
     <dt>Outputs</dt>
     <dd>
-        The output will be a list of ValidatedProfile where each <a>attribute</a> will have a ValidityStatus status and a
-        ErrorDescription description.
+        The output will be a list of Validated_Attribute where each <a>attribute</a> will have a Validity_Status and a
+        Error_Description.
     </dd>
 
     <dt>Expected behavior</dt>
