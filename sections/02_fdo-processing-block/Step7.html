@@ -31,7 +31,7 @@
                         the <a>cardinalities</a> in the <a>profile</a>. Note that missing optional fields is acceptable.
                     </li>
                     <li>PARTIALLY_VALID:
-                        Some of the <a>attributes</a> in the <a>profile</a> have the proper number of occurrences in the
+                        Some of the <a>attributes</a> in the <a>profile</a> has the proper number of occurrences in the
                         <a>record</a>.
                     </li>
                     <li>INVALID:
@@ -82,19 +82,17 @@
 
     <dd>
         This step shall process each <a>FDO profile</a> selected from the <a>FDO record</a> during <a href="#step6"></a>
-        and create a list of Profile_Validation_Status specifying how the <a>FDO record</a> conforms to each of the
+        and create a list of Validated_Profile specifying how the <a>FDO record</a> conforms to each of the
         <a>FDO profile</a>’s <a>attribute definitions</a>.
 
-        <p>The following describes the expected behavior for a given <a>FDO profile</a> to generate the
-            Profile_Validation_Status, the Attributes_In_Profile lits, Valid_Attributes list ,and the Invalid_Attributes
-            list.
+        <p>The following describes the expected behavior for a given <a>FDO profile</a> to generate the Validated_Profile.
         </p>
         <ol>
             <li>
                  For each <a>FDO profile</a> selected, the process will get the list of its <a>attribute definitions</a> and
                 store them in the Attributes_In_Profile list. Then, it checks whether each <a>attribute</a>'s cardinality is
-                restricted by the profile. If not, the original <a>cardinality</a> is written to the Attributes_In_Profile
-                list, else the new restricted <a>cardinality</a>.
+                restricted by the profile. If not, the original <a>cardinality</a> (from the <a>attribute definition</a>)
+                is written to the Attributes_In_Profile list, else the new restricted <a>cardinality</a>.
                 <p>
                 If the <a>FDO profile</a> cannot be mapped to a valid list of <a>attribute definitions</a> and
                 <a>cardinalities</a>, the process instead throws one of the following exceptions:
@@ -109,7 +107,7 @@
                 </ul>
             </li>
             <li>The <a>FDO record</a> contains all the <a>attributes</a> given in the <a>profile</a> with the proper
-                number of occurrences. The outputs are:
+                number of occurrences. The outputs (additional to Attributes_In_Profile) are:
                 <ul>
                     <li>Profile_Validation_Status: VALID</li>
                     <li>Valid_Attributes: contains the list of all found <a>attributes</a> together with their
@@ -119,13 +117,14 @@
             </li>
             <li>
                 The <a>FDO record</a> contains some of the <a>attributes</a> given in the <a>profile</a> with the proper
-                number of occurrences, and some with the wrong number of occurrences. The outputs are
+                number of occurrences, and some with the wrong number of occurrences. The outputs (additional to
+                Attributes_In_Profile) are
                 <ul>
                     <li>Profile_Validation_Status: PARTIALLY_VALID</li>
                     <li>Valid_Attributes: contains the list of valid <a>attributes</a> together with their number of
                         occurrences.
                     </li>
-                    <li>Invalid_Attributes: ccontains the list of invalid <a>attributes</a> together with their number of
+                    <li>Invalid_Attributes: contains the list of invalid <a>attributes</a> together with their number of
                         occurrences.</li>
                 </ul>
             </li>
@@ -133,7 +132,7 @@
                 The <a>FDO record</a> does not contain any of the <a>attributes</a> given in the <a>profile</a> with the
                 proper number of occurrences. The outputs are:
                 <ul>
-                    <li>Profile_Validation:Status: INVALID</li>
+                    <li>Profile_Validation_Status: INVALID</li>
                     <li>Valid_Attributes: empty</li>
                     <li>Invalid_Attributes: contains the list of all found <a>attributes</a> together with their
                         occurrences</li>
