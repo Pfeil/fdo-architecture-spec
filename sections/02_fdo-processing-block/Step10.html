@@ -8,18 +8,62 @@ was completed and that its status indicates that a <a><em>0.FDO/Data</em></a> fi
         <a>FDO record</a>.
     </dd>
     <dt>Outputs</dt>
-    <dd>Depending on the content of the <a><em>0.FDO/Data</em></a> field, the output is one of the following:
+    <dd>Depending on the value of the <a><em>0.FDO/Data</em></a> field, the output is one of the following:
         <ul>
-            <li>a data bit-sequence</li>
-            <li>a location where the data bit-sequence is stored</li>
             <li>the string <em>self</em></li>
+            <li>
+                an object Data which consists of
+                <ul>
+                    <li>a list Inline_Data containing inline data bit-sequences</li>
+                    <li>a list Data_Locations containing web locations where data bit-sequences are stored</li>
+                </ul>
+            </li>
             <li>a null value</li>
         </ul>
     </dd>
     <dt>Expected behavior</dt>
     <dd>
-        The Client inspects each of the Validated_Profiles and finds their respective
-        <a><em>0.FDO/Data</em></a> <a>attributes</a> to find the data <a>attributes</a>.
+        The client locates all <a><em>0.FDO/Data</em></a> <a>attributes</a> in the <a>FDO record</a> and performs the
+        following steps for each of them. Having more than one <a><em>0.FDO/Data</em></a> means that this <a>FDO</a>
+        contains a <a>collection</a> of <a>resources</a>.
+        <ul>
+            <li>
+                The data attribute either contains the string <em>self</em>, or it uses <a>attribute referencing</a>.
+                <ul>
+                    <li>
+                        If the value of <a><em>0.FDO/Data</em></a> is <em>self</em>, <em>self</em> is returned,
+                        indicating to the client that the <a>FDO record</a> is itself regarded as the data bit-sequence.
+                        In this case there must not be more than one <a><em>0.FDO/Data</em></a> in the record.
+                    </li>
+                    <li>
+                        If the attribute referencing mechanism is applied, the client reads the value of
+                        <a><em>0.FDO/Data</em></a> and checks which other attribute(s) the data <a>attribute</a> is
+                        pointing to. For each referenced <a>attribute</a>, the <a>attribute definition</a> of the
+                        referenced <a>attribute</a> is inspected to find out how the data are typed.
+                        <ul>
+                            <li>
+                                If the <a>attribute definition</a> specifies that the data is at a certain web location, this
+                                location is stored in Data_Locations.
+                            </li>
+                            <li>
+                                If the attribute definition specifies that the data is in-line, the inline data are
+                                stored in Inline_Data.
+                            </li>
+                            <li>
+                                If the attribute definition specifies that the data is within its own FDO (which could
+                                be either an inline-FDO or a reference to an FDO), the client accesses this FDO and
+                                recurses until it finds either a <a><em>0.FDO/Data</em></a> attribute with the value
+                                <em>self</em>, with an in-line data bit-sequence, with a web-location or an invalid FDO.
+                            </li>
+                            <li>
+                                If the attribute referencing mechanism fails such that no data locations or inline data
+                                can be found, a null value is returned.
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+        </ul>
         The client SHOULD make the best effort to provide the means to access the data depending on the
         manner in which the <a>FDO</a> references its data.
     </dd>
