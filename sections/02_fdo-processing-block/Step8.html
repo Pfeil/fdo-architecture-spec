@@ -20,19 +20,20 @@ of the specific <a>attribute definition</a>.
 
     <dt>Expected behavior</dt>
     <dd>
-        The <a>FDO attribute</a> processing iterates over the list of <a>attributes</a> and using the following steps:
+        The <a>FDO attribute</a> processing iterates over the list of <a>attributes</a> using the following steps:
         <ol>
-            <li>If it has a validation rule for the type it applies it on the <a>attribute</a>’s value.
-                It will set the validity status and any error description it MAY have generated.
-                The ValidityStatus will include, but not limited to, the following list:
+            <li>This step checks whether the <a>attribute definition</a> specifies any <a>validation</a> rules. If it
+                does, it applies the rules on the <a>attribute</a>’s value. It will set the Validity_Status and any
+                Error_Description it may have generated. The Validity_Status will include, but is not limited to, the
+                following list:
                 <ul>
-                    <li>VALID: Indicates that the value is appropriate according to the type validation rules.</li>
-                    <li>INVALID: Indicates that the value did not comply with the validation rules.</li>
-                    <li>PARTIAL: Indicates that the value is partially valid.
+                    <li>VALID: Indicates that the value is appropriate according to the validation rules.</li>
+                    <li>PARTIALLY_VALID: Indicates that the value is partially valid.
                         An example is the case of a <a><em>0.FDO/DateTime</em></a> <a>attribute</a>,
                         where the date is filled in but there is no time information.
                         While incomplete, this value could still be of interest to the client.
                     </li>
+                    <li>INVALID: Indicates that the value did not comply with the validation rules.</li>
                 </ul>
             </li>
 
