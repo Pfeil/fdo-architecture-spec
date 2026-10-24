@@ -1,70 +1,59 @@
 <h3 id="step10">[S-10]: FDO Data Access</h3>
-This step attempts to return the <a>FDO</a>’s data bit-sequence or its location. It assumes that <a href="#step4"></a>
-was completed and that its status indicates that a <a><em>0.FDO/Data</em></a> field is present.
+This step attempts to return the <a>FDO</a>’s data bit-sequence or a reference to it.
+It assumes that <a href="#step4"></a> was completed and that its status indicates that a <a><em>0.FDO/Data</em></a>
+field is present (a Mandatory_Attributes_Status of COMPLETE, DATA_ONLY, TYPE_MISSING, or PROFILE_MISSING).
 <dl>
     <dt>Inputs</dt>
-    <dd>This step expects that <a href="#step4"></a> had a Mandatory_Attributes_Status of COMPLETE, DATA_ONLY,
-        TYPE_MISSING, or PROFILE_MISSING. This step expects the output of <a href="#step3"></a>: exactly one well-structured
-        <a>FDO record</a>.
+    <dd>
+        This step expects the output of <a href="#step3"></a>, a list of <a>FDO attributes</a>.
     </dd>
     <dt>Outputs</dt>
-    <dd>Depending on the value of the <a><em>0.FDO/Data</em></a> field, the output is one of the following:
+    <dd>
+        An object is returned which consists of the following elements:
         <ul>
-            <li>the string <em>self</em></li>
             <li>
-                an object Data which consists of
+                Data_Extraction_Status:
                 <ul>
-                    <li>a list Inline_Data containing inline data bit-sequences</li>
-                    <li>a list Data_Locations containing web locations where data bit-sequences are stored</li>
+                    <li>SUCCESS: All <a><em>0.FDO/Data</em></a> <a>attributes</a> are valid, i.e., they all either
+                    contain the element <em>self</em> or they point to another <a>attribute</a> in the record.</li>
+                    <li>PARTIAL_SUCCESS: Some <a><em>0.FDO/Data</em></a> <a>attributes</a> are valid.</li>
+                    <li>FAILURE: No <a><em>0.FDO/Data</em></a> <a>attributes</a> is valid.</li>
                 </ul>
             </li>
-            <li>a null value</li>
+            <li>
+                Data_Attributes: a list of <a>attributes</a>, each of which contains data either inline, by reference,
+                or its value is <em>self</em>. In the latter case, the <a>record</a> is itself the data of the <a>FDO</a>.
+            </li>
         </ul>
     </dd>
     <dt>Expected behavior</dt>
     <dd>
-        The client locates all <a><em>0.FDO/Data</em></a> <a>attributes</a> in the <a>FDO record</a> and performs the
-        following steps for each of them. Having more than one <a><em>0.FDO/Data</em></a> means that this <a>FDO</a>
-        contains a <a>collection</a> of <a>resources</a>.
+        The <a><em>0.FDO/Data</em></a> <a>attribute</a> by definition either has as its value the string <em>self</em>,
+        or it uses the <a>attribute referencing</a> mechanism to point to other <a>attributes</a> in the <a>record</a>
+        that contains data either by reference or inline. The client locates all <a><em>0.FDO/Data</em></a>
+        <a>attributes</a> in the <a>FDO record</a>. For each of them it performs the following steps:
         <ul>
             <li>
-                The data attribute either contains the string <em>self</em>, or it uses <a>attribute referencing</a>.
-                <ul>
-                    <li>
-                        If the value of <a><em>0.FDO/Data</em></a> is <em>self</em>, <em>self</em> is returned,
-                        indicating to the client that the <a>FDO record</a> is itself regarded as the data bit-sequence.
-                        In this case there must not be more than one <a><em>0.FDO/Data</em></a> in the record.
-                    </li>
-                    <li>
-                        If the attribute referencing mechanism is applied, the client reads the value of
-                        <a><em>0.FDO/Data</em></a> and checks which other attribute(s) the data <a>attribute</a> is
-                        pointing to. For each referenced <a>attribute</a>, the <a>attribute definition</a> of the
-                        referenced <a>attribute</a> is inspected to find out how the data are typed.
-                        <ul>
-                            <li>
-                                If the <a>attribute definition</a> specifies that the data is at a certain web location, this
-                                location is stored in Data_Locations.
-                            </li>
-                            <li>
-                                If the attribute definition specifies that the data is in-line, the inline data are
-                                stored in Inline_Data.
-                            </li>
-                            <li>
-                                If the attribute definition specifies that the data is within its own FDO (which could
-                                be either an inline-FDO or a reference to an FDO), the client accesses this FDO and
-                                recurses until it finds either a <a><em>0.FDO/Data</em></a> attribute with the value
-                                <em>self</em>, with an in-line data bit-sequence, with a web-location or an invalid FDO.
-                            </li>
-                            <li>
-                                If the attribute referencing mechanism fails such that no data locations or inline data
-                                can be found, a null value is returned.
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
+                If the <a><em>0.FDO/Data</em></a> <a>attribute</a> has the value <em>self</em>, then
+                (0.FDO/DataAsSelf, self) is added to Data_Attributes. Proceed to the next <a><em>0.FDO/Data</em></a>.
+            </li>
+            <li>
+                If the <a><em>0.FDO/Data</em></a> <a>attribute</a> has a different value, it is assumed that the
+                <a>attribute referencing</a> mechanism is applied. It is checked whether this value appears in any other
+                <a>attribute</a> as first element. All such other <a>attributes</a> which are found in the <a>record</a>
+                (<a><em>0.FDO/Data</em></a> is said to be pointing to those via <a>attribute referencing</a>) are added
+                to Data_Attributes. Proceed to the next <a><em>0.FDO/Data</em></a>.
             </li>
         </ul>
-        The client SHOULD make the best effort to provide the means to access the data depending on the
-        manner in which the <a>FDO</a> references its data.
+        The Data_Extraction_Status is determined as follows:
+        <ul>
+            <li>If the Data_Attributes list is empty, then the Data_Extraction_Status is FAILURE.</li>
+            <li>Else if there are <a><em>0.FDO/Data</em></a> <a>attributes</a> in the <a>record</a> whose value is not
+                <em>self</em> and which do not point anywhere, the Data_Extraction_Status is set to PARTIAL_SUCCESS.
+            </li>
+            <li>Else, all data elements were found and the Data_Extraction_Status is set to SUCCESS.</li>
+        </ul>
+        The client SHOULD make the best effort to provide the means to access the data collected in the Data_Attributes
+        list depending on the manner in which the <a>FDO</a> references its data.
     </dd>
 </dl>
